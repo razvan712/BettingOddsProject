@@ -1,0 +1,25 @@
+.bookies_container {
+    display: flex;
+    border: 1px solid black;
+    margin: 10px;
+    padding: 10px;
+    flex-wrap: wrap;
+    width: 80vw;
+
+
+    button{
+         width: 100px;
+         height: 25px;
+        margin: 4px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: medium;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        
+    }
+}
+
+
