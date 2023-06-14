@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Odds = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <div></div>;
+};
 
-export default Odds
+export default Odds;

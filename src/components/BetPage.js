@@ -4,11 +4,12 @@ import "./BetPage.scss";
 import Bets from "./Bets";
 import apiKey from "../data/config";
 
-const Contact = ({ matchId, teams }) => {
+const BetPage = ({ matchId, teams }) => {
   const [bookies, setBookies] = useState([]);
   const [activeBookie, setActiveBookie] = useState({});
 
   useEffect(() => {
+    console.log(matchId, "fffffffffffff");
     axios({
       method: "GET",
       url: "https://api-football-v1.p.rapidapi.com/v3/odds",
@@ -19,7 +20,7 @@ const Contact = ({ matchId, teams }) => {
       },
     })
       .then((response) => {
-        console.log(response.data.response[0], "odds");
+        console.log(response.data, "odds");
         setBookies(response.data.response[0].bookmakers);
       })
       .catch((error) => {
@@ -34,7 +35,6 @@ const Contact = ({ matchId, teams }) => {
   return (
     <>
       <div>
-        <h1>Contact</h1>
         {/* <p>Match ID: {matchId}</p> */}
         <div className="bookies_container">
           {bookies?.map((bookie) => {
@@ -57,4 +57,4 @@ const Contact = ({ matchId, teams }) => {
   );
 };
 
-export default Contact;
+export default BetPage;

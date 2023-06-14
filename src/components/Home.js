@@ -10,19 +10,17 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
   const [input, setInput] = useState("");
   const [countries, setCountries] = useState([]);
 
+  function handleInputChange(event) {
+    setInput(event.target.value);
+  }
 
+  function handleSubmit(event) {
+    event.preventDefault();
 
-function handleInputChange(event) {
-  setInput(event.target.value);
-}
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().split("T")[0]; // Format the current date as "YYYY-MM-DD"
 
-function handleSubmit(event) {
-  event.preventDefault();
-
-  const currentDate = new Date();
-  const formattedDate = currentDate.toISOString().split("T")[0]; // Format the current date as "YYYY-MM-DD"
-
-  axios({
+    axios({
       method: "GET",
       url: "https://api-football-v1.p.rapidapi.com/v3/fixtures",
       params: { date: formattedDate },
@@ -44,10 +42,8 @@ function handleSubmit(event) {
       .catch((error) => {
         console.log(error);
       });
-      setInput("");
-     }
-    
- 
+    setInput("");
+  }
 
   function getData(id, teams) {
     axios({
@@ -75,7 +71,7 @@ function handleSubmit(event) {
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString().split("T")[0]; // Format the current date as "YYYY-MM-DD"
     console.log(formattedDate, "formattedDate");
-    
+
     axios({
       method: "GET",
       url: "https://api-football-v1.p.rapidapi.com/v3/fixtures",
@@ -87,14 +83,14 @@ function handleSubmit(event) {
     })
       .then((response) => {
         console.log(response.data.response, "response");
-  
+
         const matches = response.data.response.map((fixture) => {
           console.log(fixture.league.country, "fixture");
           return fixture.league.country;
         });
-  
+
         const uniqueCountries = Array.from(new Set(matches)); // Remove duplicates using Set
-  
+
         console.log(uniqueCountries, "uniqueCountries");
         setCountries(uniqueCountries);
       })
@@ -112,24 +108,27 @@ function handleSubmit(event) {
         Get Available Leagues
       </button>
       <h2>Available Leagues</h2>
-      <div className="w-100 d-flex flex-wrap">
-      {countries && countries.map((item) => {
-        return <p className="league_button">{item}</p>
-      })
-      }
+      <div className="w-100 ">
+        <div className="d-flex flex-wrap justify-content-center">
+          {countries &&
+            countries.map((item) => {
+              return <p className="league_button">{item}</p>;
+            })}
+        </div>
       </div>
 
       <form onSubmit={handleSubmit}>
-        <label>
-          League
-        </label>
-          <input type="text" name="input" value={input} onChange={handleInputChange}/>
-       
-        <input type="submit" value="Submit" />
+        <label>League</label>
+        <input
+          type="text"
+          name="input"
+          value={input}
+          onChange={handleInputChange}
+        />
 
+        <input type="submit" value="Submit" />
       </form>
 
-      
       <table className="table-success table table-striped table-hover custom-table">
         <thead>
           <tr>
@@ -157,7 +156,7 @@ function handleSubmit(event) {
                       <button
                         onClick={() => getData(id, teams)}
                         type="button"
-                        class="btn btn-primary"
+                        className="btn btn-primary"
                       >
                         Get Data
                       </button>
