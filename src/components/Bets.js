@@ -65,7 +65,7 @@ const Bets = ({ activeBookie, teams }) => {
                   <tr>
                     <th colSpan={3}>
                       <div className="d-flex justify-content-center">
-                        Both teams score {teams.home} vs {teams.away}
+                        Both teamss score {teams.home} vs {teams.away}
                       </div>{" "}
                     </th>
                   </tr>
@@ -149,8 +149,6 @@ const Bets = ({ activeBookie, teams }) => {
                 ?.map((row, rowIndex) => (
                   <tr key={rowIndex}>{row}</tr>
                 ))}
-            
-
             </tbody>
           </Table>
         ) : null}
