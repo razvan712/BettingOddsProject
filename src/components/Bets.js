@@ -126,7 +126,7 @@ const Bets = ({ activeBookie, teams }) => {
               <tr>
                 <th colSpan={3}>
                   <div className="d-flex justify-content-center">
-                    Asian handicap {teams.home} vs {teams.away}
+                    Asian handicapp {teams.home} vs {teams.away}
                   </div>{" "}
                 </th>
               </tr>
