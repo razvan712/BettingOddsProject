@@ -149,6 +149,8 @@ const Bets = ({ activeBookie, teams }) => {
                 ?.map((row, rowIndex) => (
                   <tr key={rowIndex}>{row}</tr>
                 ))}
+            
+
             </tbody>
           </Table>
         ) : null}
