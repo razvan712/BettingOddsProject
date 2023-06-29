@@ -182,9 +182,10 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
                     {" "}
                     <Link to="betpage">
                       {" "}
-                      <Button onClick={() => getData(id, teams)} type="button">
+                      {/* <Button onClick={() => getData(id, teams)} type="button">
                         Get Data
-                      </Button>
+                      </Button> */}
+                      <p>musana</p>
                     </Link>
                   </td>
                 </tr>
