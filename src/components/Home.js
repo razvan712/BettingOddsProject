@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 import apiKey from "../data/config";
 import { Button } from "react-bootstrap";
 import { useQuery } from "react-query";
+import { fetchFixturesApi, fetchLeaguesApi } from "../api/index";
 
 const currentDate = new Date();
 const formattedDate = currentDate.toISOString().split("T")[0];
@@ -18,7 +19,7 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
   const [selected, setSelected] = useState("");
 
   useEffect(() => {
-    fetchData(musana);
+    fetchData(fixtures);
   }, [input2]);
 
   function handleInputChange(event) {
@@ -33,68 +34,35 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
     setSelected(countries.find((country) => country === input) || "");
   }
 
-  const {
-    data: musana,
-    isLoading,
-    error,
-  } = useQuery("matches", () => {
-    return axios({
-      method: "GET",
-      url: "https://api-football-v1.p.rapidapi.com/v3/fixtures",
-      params: { date: formattedDate },
-      headers: {
-        "X-RapidAPI-Key": apiKey,
-        "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
-      },
-    });
-  });
-
-  // useEffect(() => {
-  //   console.log(data, "data");
-  // }, []);
+  const { data: fixtures } = useQuery("matches", fetchFixturesApi);
 
   function fetchData(data) {
-    const filteredMatches = data?.data.response.filter((fixture) => {
+    const filteredMatches = data?.data?.response.filter((fixture) => {
       return fixture.league.country === input2;
     });
-
     setMatches(filteredMatches);
   }
 
+  const {
+    data: leagues,
+    isLoading: isLoadingLeagues,
+    error: errorLeagues,
+  } = useQuery("leagues", fetchLeaguesApi);
+
+  console.log(leagues, "leagues");
+
   useEffect(() => {
-    fetchLeagues();
+    fetchLeagues(leagues);
   }, []);
 
-  function fetchLeagues() {
-    const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().split("T")[0]; // Format the current date as "YYYY-MM-DD"
-    // console.log(formattedDate, "formattedDate");
+  function fetchLeagues(data) {
+    const matches = data?.data?.response.map((fixture) => {
+      return fixture.league.country;
+    });
 
-    axios({
-      method: "GET",
-      url: "https://api-football-v1.p.rapidapi.com/v3/fixtures",
-      params: { date: formattedDate },
-      headers: {
-        "X-RapidAPI-Key": apiKey,
-        "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
-      },
-    })
-      .then((response) => {
-        // console.log(response.data.response, "response");
+    const uniqueCountries = Array.from(new Set(matches)); // Remove duplicates using Set
 
-        const matches = response.data.response.map((fixture) => {
-          // console.log(fixture.league.country, "fixture");
-          return fixture.league.country;
-        });
-
-        const uniqueCountries = Array.from(new Set(matches)); // Remove duplicates using Set
-
-        // console.log(uniqueCountries, "uniqueCountries");
-        setCountries(uniqueCountries);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    setCountries(uniqueCountries);
   }
 
   function getData(id, teams) {
@@ -108,11 +76,8 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
       },
     })
       .then((response) => {
-        // console.log(response);
-        // console.log(id, "id");
         setMatchId(id);
         setTeams(teams);
-        // console.log(teams, "teams");
       })
       .catch((error) => {
         console.log(error);
@@ -176,7 +141,7 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
                 home: item.teams.home.name,
                 away: item.teams.away.name,
               };
-              // console.log(id, "id");
+
               return (
                 <tr key={id}>
                   <td className="team-table-data">{item.teams.home.name}</td>
