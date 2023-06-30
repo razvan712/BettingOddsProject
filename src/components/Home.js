@@ -4,6 +4,10 @@ import "./Home.scss";
 import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 import apiKey from "../data/config";
 import { Button } from "react-bootstrap";
+import { useQuery } from "react-query";
+
+const currentDate = new Date();
+const formattedDate = currentDate.toISOString().split("T")[0];
 
 const Home = ({ matchId, setMatchId, setTeams }) => {
   const [league, setLeague] = useState(null);
@@ -14,7 +18,7 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
   const [selected, setSelected] = useState("");
 
   useEffect(() => {
-    fetchData();
+    fetchData(musana);
   }, [input2]);
 
   function handleInputChange(event) {
@@ -29,11 +33,12 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
     setSelected(countries.find((country) => country === input) || "");
   }
 
-  function fetchData() {
-    const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().split("T")[0]; // Format the current date as "YYYY-MM-DD"
-
-    axios({
+  const {
+    data: musana,
+    isLoading,
+    error,
+  } = useQuery("matches", () => {
+    return axios({
       method: "GET",
       url: "https://api-football-v1.p.rapidapi.com/v3/fixtures",
       params: { date: formattedDate },
@@ -41,20 +46,19 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
         "X-RapidAPI-Key": apiKey,
         "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
       },
-    })
-      .then((response) => {
-        // console.log(response.data.response, "response");
+    });
+  });
 
-        const filteredMatches = response.data.response.filter((fixture) => {
-          // console.log(fixture.league.country, "fixture");
-          return fixture.league.country === input2;
-        });
-        // console.log(filteredMatches, "matches");
-        setMatches(filteredMatches);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  // useEffect(() => {
+  //   console.log(data, "data");
+  // }, []);
+
+  function fetchData(data) {
+    const filteredMatches = data?.data.response.filter((fixture) => {
+      return fixture.league.country === input2;
+    });
+
+    setMatches(filteredMatches);
   }
 
   useEffect(() => {
@@ -182,10 +186,9 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
                     {" "}
                     <Link to="betpage">
                       {" "}
-                      {/* <Button onClick={() => getData(id, teams)} type="button">
+                      <Button onClick={() => getData(id, teams)} type="button">
                         Get Data
-                      </Button> */}
-                      <p>musana</p>
+                      </Button>
                     </Link>
                   </td>
                 </tr>
