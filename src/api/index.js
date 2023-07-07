@@ -28,4 +28,16 @@ const fetchLeaguesApi = () => {
   });
 };
 
+// const fetchBookiesApi= () => {
+//   return axios({
+//     method: "GET",
+//     url: "https://api-football-v1.p.rapidapi.com/v3/odds",
+//     params: { fixture: matchId },
+//     headers: {
+//       "X-RapidAPI-Key": apiKey,
+//       "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
+//     },
+//   })
+// }
+
 export { fetchFixturesApi, fetchLeaguesApi };

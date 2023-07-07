@@ -7,6 +7,21 @@ import apiKey from "../data/config";
 const BetPage = ({ matchId, teams }) => {
   const [bookies, setBookies] = useState([]);
   const [activeBookie, setActiveBookie] = useState({});
+  const [selected, setSelected] = useState('');
+
+  useEffect(() => {
+    if (bookies.length > 0) {
+      const storedSelectedBookie = sessionStorage.getItem("selectedBookie");
+      const initialSelectedBookie = storedSelectedBookie || bookies[0]?.name;
+  
+      setSelected(initialSelectedBookie);
+  
+      const initialActiveBookie = bookies.find(
+        (bookie) => bookie.name === initialSelectedBookie
+      );
+      setActiveBookie(initialActiveBookie);
+    }
+  }, [bookies]);
 
   useEffect(() => {
     console.log(matchId, "fffffffffffff");
@@ -28,9 +43,27 @@ const BetPage = ({ matchId, teams }) => {
       });
   }, [matchId]);
 
-  useEffect(() => {
-    console.log(activeBookie, "activeBookie");
-  }, [activeBookie]);
+ 
+
+  // useEffect(() => {
+  //   axios({
+  //     method: "GET",
+  //     url: "https://api-football-v1.p.rapidapi.com/v3/odds",
+  //     params: { fixture: matchId },
+  //     headers: {
+  //       "X-RapidAPI-Key": apiKey,
+  //       "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
+  //     },
+  //   })
+  //     .then((response) => {
+  //       console.log(response?.data?.response[0].bookmakers[0], "bieeefffr");
+  //       setActiveBookie(prev=> response?.data?.response[0].bookmakers[0]);
+  //       setSelected(prev=> response?.data?.response[0].bookmakers[0].name)
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   return (
     <>
@@ -42,8 +75,16 @@ const BetPage = ({ matchId, teams }) => {
               <button
                 onClick={() => {
                   setActiveBookie((prev) => bookie);
+                  setSelected((prev) => bookie.name);
                 }}
-                className="bookies_button"
+
+                className={
+                  selected===bookie.name?
+                  'active_button':
+                  ''
+                }
+                
+
                 key={bookie.id}
               >
                 {bookie.name}

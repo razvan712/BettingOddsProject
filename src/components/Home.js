@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+
 import axios from "axios";
 import "./Home.scss";
 import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 import apiKey from "../data/config";
-import { Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import { useQuery } from "react-query";
 import { fetchFixturesApi, fetchLeaguesApi } from "../api/index";
 
@@ -12,15 +13,46 @@ const formattedDate = currentDate.toISOString().split("T")[0];
 
 const Home = ({ matchId, setMatchId, setTeams }) => {
   const [league, setLeague] = useState(null);
-  const [matches, setMatches] = useState(null);
+  const [matches, setMatches] = useState([]);
   const [input, setInput] = useState("");
   const [countries, setCountries] = useState([]);
-  const [input2, setInput2] = useState("");
-  const [selected, setSelected] = useState("");
+  const [input2, setInput2] = useState('');
+  const [selected, setSelected] = useState(
+    sessionStorage.getItem("selected") || countries[0] || ""
+  );
+
+  const [initial, setInitial]= useState([])
+
+  
+
+  useEffect(() => {
+    if (countries.length > 0) {
+      setSelected(sessionStorage.getItem("selected") || countries[0]);
+    }
+  }, [countries]);
+
 
   useEffect(() => {
     fetchData(fixtures);
   }, [input2]);
+
+  const { data: fixtures } = useQuery("matches", fetchFixturesApi);
+
+  useEffect(() => {
+    if (fixtures) {
+      const filteredMatches = fixtures?.data?.response.filter((el) => {
+        return el.league.country === selected;
+      });
+  
+      setMatches(filteredMatches);
+      console.log(filteredMatches, 'filteredMatches');
+    }
+  }, [fixtures, selected]);
+
+  
+
+  
+
 
   function handleInputChange(event) {
     setInput(event.target.value);
@@ -28,17 +60,16 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
 
   function handleSubmit(event) {
     event.preventDefault();
-
+  
+    const lowercaseInput = input.toLowerCase();
     setInput2(input);
     setInput("");
-    setSelected(countries.find((country) => country === input) || "");
+    setSelected(countries.find((country) => country.toLowerCase() === lowercaseInput) || "");
   }
-
-  const { data: fixtures } = useQuery("matches", fetchFixturesApi);
-
+  
   function fetchData(data) {
     const filteredMatches = data?.data?.response.filter((fixture) => {
-      return fixture.league.country === input2;
+      return fixture.league.country.toLowerCase() === input2.toLowerCase();
     });
     setMatches(filteredMatches);
   }
@@ -49,11 +80,12 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
     error: errorLeagues,
   } = useQuery("leagues", fetchLeaguesApi);
 
-  console.log(leagues, "leagues");
+
 
   useEffect(() => {
     fetchLeagues(leagues);
-  }, []);
+    console.log(leagues, 'leagues')
+  }, [leagues]);
 
   function fetchLeagues(data) {
     const matches = data?.data?.response.map((fixture) => {
@@ -84,6 +116,7 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
       });
   }
   console.log(selected, "selected");
+  
 
   return (
     <>
@@ -97,25 +130,27 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
           className="leagues_input"
         />
 
-        <input type="submit" value="Submit" className="form-submit" />
+        <input type="submit" value="Search" className="form-submit" />
       </form>
 
       <h2>Available Leagues</h2>
       <div className="w-100 ">
         <div className="d-flex flex-wrap  w-100">
-          {countries &&
-            countries.map((item) => {
+          {isLoadingLeagues?  <p>LOADING</p>:
+            countries.map((item, index) => {
               return (
-                <button
+                <button key={index} 
                   className={
                     selected === item
-                      ? "league_button_selected league_button"
-                      : "league_button"
+                      ? "league_button_selected league_button text-truncate"
+                      : "league_button text-truncate"
                   }
                   onClick={(event) => {
                     setInput2(item);
-                    setSelected((prev) => item);
+                    setSelected(item);
+                    sessionStorage.setItem("selected", item);
                   }}
+                  
                 >
                   {item}
                 </button>
@@ -124,12 +159,14 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
         </div>
       </div>
 
-      <table className="table-success table table-striped table-hover custom-table">
+      <Table className="table-success table  table-hover custom-table">
         <thead>
           <tr>
+            <th>League</th>
             <th>Home Team</th>
 
             <th>Away Team</th>
+            
             <th></th>
           </tr>
         </thead>
@@ -144,14 +181,17 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
 
               return (
                 <tr key={id}>
-                  <td className="team-table-data">{item.teams.home.name}</td>
+                  <td  ><p >{item.league.name}</p></td>
+                  <td className="team-table-team"><p>{item.teams.home.name}</p></td>
 
-                  <td className="team-table-data">{item.teams.away.name}</td>
-                  <td>
+                  <td className="team-table-team"><p>{item.teams.away.name}</p></td>
+                  
+                  
+                  <td className="team-table-button">
                     {" "}
                     <Link to="betpage">
                       {" "}
-                      <Button onClick={() => getData(id, teams)} type="button">
+                      <Button onClick={() => getData(id, teams)} type="button" >
                         Get Data
                       </Button>
                     </Link>
@@ -160,7 +200,7 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
               );
             })}
         </tbody>
-      </table>
+      </Table>
       <Outlet />
     </>
   );

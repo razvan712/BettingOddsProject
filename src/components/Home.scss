@@ -4,6 +4,29 @@ table {
     border-collapse: collapse;
     margin-top: 5px;
     overflow: hidden;
+
+    th{
+      text-align: center;
+    }
+
+td{
+  width: 300px;
+  vertical-align: middle;
+
+}
+
+    p{
+      font-size: 15px;
+      text-align: center;
+     margin: auto 0;     
+     font-weight: 600;
+    }
+
+   button{
+    vertical-align: middle;
+    width: 100px;
+   }
+  
    
 }
 
@@ -28,9 +51,9 @@ table {
   font-size: 1rem;
   border-radius: 5px;
   margin: 5px;
- font-weight: bold;
- height: 30px;
- overflow: hidden;
+  font-weight: bold;
+  height: 30px;
+  overflow: hidden;
 
 
  
@@ -61,6 +84,13 @@ table {
   background-color: rgb(121, 144, 211);
 }
 
-.team-table-data {
-  width: 45%;
+
+
+
+
+.team-table-button{
+  width: 110px;
+
 }
+
+

@@ -1,25 +1,39 @@
 .navbar_container {
     width: 100%;
-    margin: 0 auto;
-    height: 100px;
+    margin: 5px auto;
+    height: 50px;
     display: flex;
-     ul{
+    border-radius: 5px;
+    align-items: center;
+
+    
+     ul{ 
+       margin-top: 10px;
         display: flex;
         list-style: none;
         margin-left: auto;
         margin-right: 0;
+        align-items: center; 
+
         li{
             margin-left: 20px;
             margin-right: 20px;
             a{
                 text-decoration: none;
-                color: black;
+                // color: black;
                 font-size: 20px;
                 &:hover{
                     color: red;
                 }
+
+                
             }
+
+          
         }
      }
 }
 
+.active_link {
+    color: black;
+    }

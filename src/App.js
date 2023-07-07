@@ -11,6 +11,7 @@ import MatchData from "./components/MatchData/MatchData";
 import Login from "./components/Login";
 import { AuthContext, AuthProvider } from "./contexts/AuthContext";
 import { QueryClient, QueryClientProvider } from "react-query";
+import banner from './assets/banner.png'
 
 const queryClient = new QueryClient();
 
@@ -22,8 +23,9 @@ function App() {
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
-            <div className="App">
-              <h1>RazBet</h1>
+            <div className="App" >
+          
+              <img src={banner} alt="banner" width="100%"  />
             </div>
             <Navbar />
 

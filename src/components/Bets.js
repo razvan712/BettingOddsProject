@@ -3,19 +3,19 @@ import "./Bets.scss";
 import { Table } from "react-bootstrap";
 
 const Bets = ({ activeBookie, teams }) => {
-  console.log(activeBookie, "activeBookie");
+  console.log(activeBookie, "activeBookie9090");
   const bothTeamsScore = activeBookie?.bets?.filter(
     (bet) => bet.name === "Both Teams Score"
   );
-  console.log(bothTeamsScore, "BothTeamsScore");
+  // console.log(bothTeamsScore, "BothTeamsScore");
   const exactScore = activeBookie?.bets?.filter(
     (bet) => bet.name === "Exact Score"
   );
-  console.log(exactScore, "exactScore");
+  // console.log(exactScore, "exactScore");
   const asianHandicap = activeBookie?.bets?.filter(
     (bet) => bet.name === "Asian Handicap"
   );
-  console.log(asianHandicap, "asian Handicap");
+  // console.log(asianHandicap, "asian Handicap");
 
   return (
     <>
