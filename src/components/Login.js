@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-
 import { Button, Form } from "react-bootstrap";
+import "./Login.scss";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -20,8 +20,8 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="login-container bg-success-subtle">
+      <h1>RazBet</h1>
 
       <Form onSubmit={handleSubmit}>
         <label htmlFor="username">Username</label>

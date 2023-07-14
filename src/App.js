@@ -10,7 +10,7 @@ import They from "./components/AboutComp/They";
 import MatchData from "./components/MatchData/MatchData";
 import Login from "./components/Login";
 import { AuthContext, AuthProvider } from "./contexts/AuthContext";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider, setLogger } from "react-query";
 import banner from './assets/banner.png'
 
 const queryClient = new QueryClient();
@@ -59,3 +59,4 @@ function App() {
 }
 
 export default App;
+

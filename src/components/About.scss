@@ -1,0 +1,36 @@
+.about-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+   
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+
+    ul{
+        list-style-type: disc;
+        color:  #555555;
+        font-weight: 700;
+       
+    }
+
+    li{
+        margin-top: 10px;
+    }
+  }
+  
+  .about-page h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333333;
+  }
+  
+  .about-page p {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555555;
+  }
+  
+  .about-page p:last-child {
+    margin-bottom: 0;
+  }

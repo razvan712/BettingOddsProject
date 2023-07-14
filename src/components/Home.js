@@ -128,8 +128,15 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
           value={input}
           onChange={handleInputChange}
           className="leagues_input"
+          list="leagues-datalist"
+          autoComplete="off"
         />
 
+        <datalist id="leagues-datalist">
+          {countries.map((item, index) => {
+            return <option key={index} value={item} />;
+          })}
+        </datalist>
         <input type="submit" value="Search" className="form-submit" />
       </form>
 
