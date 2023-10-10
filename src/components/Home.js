@@ -1,18 +1,21 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 
 import axios from "axios";
 import "./Home.scss";
-import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
+import {  Link, Outlet } from "react-router-dom";
 import apiKey from "../data/config";
 import { Button, Table } from "react-bootstrap";
 import { useQuery } from "react-query";
-import { fetchFixturesApi, fetchLeaguesApi } from "../api/index";
+import { fetchFixturesApi } from "../api/index";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import { AuthContext } from "../contexts/AuthContext";
+import LoginModal from "./LoginModal";
 
-const currentDate = new Date();
-const formattedDate = currentDate.toISOString().split("T")[0];
+
 
 const Home = ({ matchId, setMatchId, setTeams }) => {
-  const [league, setLeague] = useState(null);
+ 
   const [matches, setMatches] = useState([]);
   const [input, setInput] = useState("");
   const [countries, setCountries] = useState([]);
@@ -21,9 +24,9 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
     sessionStorage.getItem("selected") || countries[0] || ""
   );
 
-  const [initial, setInitial]= useState([])
+ 
+  const { userData, setUserData,} = useContext(AuthContext);
 
-  
 
   useEffect(() => {
     if (countries.length > 0) {
@@ -38,6 +41,7 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
 
   const { data: fixtures } = useQuery("matches", fetchFixturesApi);
 
+
   useEffect(() => {
     if (fixtures) {
       const filteredMatches = fixtures?.data?.response.filter((el) => {
@@ -45,13 +49,9 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
       });
   
       setMatches(filteredMatches);
-      console.log(filteredMatches, 'filteredMatches');
     }
   }, [fixtures, selected]);
 
-  
-
-  
 
 
   function handleInputChange(event) {
@@ -78,19 +78,19 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
     data: leagues,
     isLoading: isLoadingLeagues,
     error: errorLeagues,
-  } = useQuery("leagues", fetchLeaguesApi);
-
+  } = useQuery("leagues", fetchFixturesApi);
 
 
   useEffect(() => {
     fetchLeagues(leagues);
-    console.log(leagues, 'leagues')
   }, [leagues]);
 
   function fetchLeagues(data) {
     const matches = data?.data?.response.map((fixture) => {
+      
       return fixture.league.country;
-    });
+    }
+    );
 
     const uniqueCountries = Array.from(new Set(matches)); // Remove duplicates using Set
 
@@ -115,11 +115,11 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
         console.log(error);
       });
   }
-  console.log(selected, "selected");
-  
 
+ 
   return (
     <>
+        {/* <LoginModal   /> */}
       <form onSubmit={handleSubmit}>
         <label>League</label>
         <input

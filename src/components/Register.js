@@ -2,33 +2,32 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { Button, Form, Alert } from "react-bootstrap";
 import jwt_decode from "jwt-decode"; // Import JWT decoding library
-import "./Login.scss";
+import "./Register.scss";
 import google from '../assets/google.png'
 
-const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const Register = () => {
+
   const [error, setError] = useState("");
 
-  const { login } = useContext(AuthContext);
+  // const { login , username, setUsername, password,setPassword} = useContext(AuthContext);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
 
-    if (username === "admin" && password === "admin") {
-      // Simulating successful authentication by generating a JWT token
-      const token = "your_generated_jwt_token_here";
-      login(token);
-      console.log("Logged in");
-    } else {
-      setError("Wrong username or password");
-    }
-  };
+  //   if (username === "admin" && password === "admin") {
+  //     // Simulating successful authentication by generating a JWT token
+  //     const token = "your_generated_jwt_token_here";
+  //     login(token);
+  //     console.log("Logged in");
+  //   } else {
+  //     setError("Wrong username or password");
+  //   }
+  // };
 
   return (
     <div className="login-container">
       <h1>RazBet</h1>
-
+{/* 
       <Form onSubmit={handleSubmit}>
       <Button
       style={{
@@ -80,9 +79,9 @@ const Login = () => {
         <Button variant="primary" type="submit">
           Login
         </Button>
-      </Form>
+      </Form> */}
     </div>
   );
 };
 
-export default Login;
+export default Register;

@@ -8,7 +8,7 @@ import BetPage from "./components/BetPage";
 import Us from "./components/AboutComp/Us";
 import They from "./components/AboutComp/They";
 import MatchData from "./components/MatchData/MatchData";
-import Login from "./components/Login";
+import Register from "./components/Register";
 import { AuthContext, AuthProvider } from "./contexts/AuthContext";
 import { QueryClient, QueryClientProvider, setLogger } from "react-query";
 import banner from './assets/banner.png'
@@ -39,13 +39,13 @@ function App() {
                 <Route path="us" element={<Us />} />
                 <Route path="they" element={<They />} />
               </Route>
-              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               <Route
                 path="/betpage"
                 element={
                   <BetPage
                     matchId={matchId}
-                    setMatchId={setMatchId}
+                 
                     teams={teams}
                   />
                 }

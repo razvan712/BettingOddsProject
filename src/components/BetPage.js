@@ -9,6 +9,7 @@ const BetPage = ({ matchId, teams }) => {
   const [activeBookie, setActiveBookie] = useState({});
   const [selected, setSelected] = useState('');
 
+  
   useEffect(() => {
     if (bookies.length > 0) {
       const storedSelectedBookie = sessionStorage.getItem("selectedBookie");
@@ -45,30 +46,12 @@ const BetPage = ({ matchId, teams }) => {
 
  
 
-  // useEffect(() => {
-  //   axios({
-  //     method: "GET",
-  //     url: "https://api-football-v1.p.rapidapi.com/v3/odds",
-  //     params: { fixture: matchId },
-  //     headers: {
-  //       "X-RapidAPI-Key": apiKey,
-  //       "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
-  //     },
-  //   })
-  //     .then((response) => {
-  //       console.log(response?.data?.response[0].bookmakers[0], "bieeefffr");
-  //       setActiveBookie(prev=> response?.data?.response[0].bookmakers[0]);
-  //       setSelected(prev=> response?.data?.response[0].bookmakers[0].name)
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
+
 
   return (
     <>
       <div>
-        {/* <p>Match ID: {matchId}</p> */}
+     
         <div className="bookies_container">
           {bookies?.map((bookie) => {
             return (
@@ -84,7 +67,6 @@ const BetPage = ({ matchId, teams }) => {
                   ''
                 }
                 
-
                 key={bookie.id}
               >
                 {bookie.name}

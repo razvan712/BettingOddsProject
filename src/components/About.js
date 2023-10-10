@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from "react";
 import './About.scss';
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import { Button } from "react-bootstrap";
+import { AuthContext } from "../contexts/AuthContext";
+import LoginModal from "./LoginModal";
+
+
+
 
 const About = () => {
+
+
+
+
   return (
-    <div className="about-page ">
+    <>
+    {/* <LoginModal  /> */}
+    <div className="about-page "> 
+       
       <h1>About</h1>
       <ul>
         <li>
@@ -25,6 +40,7 @@ At <span>RazBet</span>, we value integrity, trust, and responsible gambling prac
         
       </ul>
     </div>
+    </>
   );
 };
 
