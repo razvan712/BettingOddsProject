@@ -1,18 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.scss";
 import Button from 'react-bootstrap/Button';
 import LoginModal from "./LoginModal";
 import UserModal from "./UserModal";
+import { get, set } from "react-hook-form";
 
 const Navbar = () => {
   const location = useLocation();
-  const { token, setShow, setShowLogout } = useContext(AuthContext);
+  const { token, setShow, setShowLogout, firstname, setToken } = useContext(AuthContext);
 
   const handleShow = () => {
     setShow(true);
   }
+
+  const getToken = () => { 
+    return localStorage.getItem("token");
+  }
+
+  
+
+  useEffect(() => {
+    const token = getToken();
+    setToken(token);
+
+  }, []);
 
   const handleShowLogout = () => {
     setShowLogout(true);
@@ -43,7 +56,7 @@ const Navbar = () => {
                 </Button>
               ) : (
                 <Button variant="primary" onClick={handleShowLogout}>
-                  User modal
+                 {firstname}
                 </Button>
               )}
             </li>

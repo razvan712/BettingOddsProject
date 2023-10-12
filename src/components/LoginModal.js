@@ -1,12 +1,14 @@
 // LoginModal.js
-import React, { useContext } from "react";
+import React, { useContext , useRef} from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { AuthContext } from "../contexts/AuthContext";
-import { set } from "react-hook-form";
+
 
 const LoginModal = () => {
   const { setShow, username, setUsername, password, setPassword, show, handleClose, setToken, setFirstname, setLastname } =
     useContext(AuthContext);
+
+    const inputRef = useRef(null);
 
     const data={
       token: "123456789",
@@ -46,6 +48,7 @@ const LoginModal = () => {
               autoFocus
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              ref={inputRef}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="passwordInput">
