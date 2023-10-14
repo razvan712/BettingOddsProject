@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.scss";
@@ -6,29 +6,48 @@ import Button from 'react-bootstrap/Button';
 import LoginModal from "./LoginModal";
 import UserModal from "./UserModal";
 import { get, set } from "react-hook-form";
+import { useCookies } from "react-cookie";
 
 const Navbar = () => {
   const location = useLocation();
-  const { token, setShow, setShowLogout, firstname, setToken } = useContext(AuthContext);
+  const { token, setShow, setShowLogout, setToken , name, setName} = useContext(AuthContext);
+  // const [name, setName] = useState('');
+  const [cookies, setCookie] = useCookies(["token"]);
+
 
   const handleShow = () => {
     setShow(true);
   }
 
-  const getToken = () => { 
-    return localStorage.getItem("token");
+  const getToken = () => {
+    console.log(cookies.token, 'special');
+    return cookies.token;
   }
 
-  
+
+
 
   useEffect(() => {
-    const token = getToken();
-    setToken(token);
+    if (cookies.token) {
+      setToken(cookies.token);
+    }
+    
+    const storedName = localStorage.getItem("name");
+    
+    if (storedName) {
+      setName(storedName);
+    }
+  }, [cookies.token]); // Listen for changes in cookies.token
+  
 
-  }, []);
 
   const handleShowLogout = () => {
     setShowLogout(true);
+  
+   
+    
+
+   
   }
 
   return (
@@ -51,20 +70,21 @@ const Navbar = () => {
             </li>
             <li>
               {token === null ? (
+                <>
                 <Button variant="primary" onClick={handleShow}>
                   Login
                 </Button>
+                <Link to="/register" className={location.pathname === "/register" ? "active_link" : ""}>
+                      Register
+                    </Link>
+                    </>
               ) : (
                 <Button variant="primary" onClick={handleShowLogout}>
-                 {firstname}
+                 {name}
                 </Button>
               )}
             </li>
-                { token === null ?(<li>
-                    <Link to="/register" className={location.pathname === "/register" ? "active_link" : ""}>
-                      Register
-                    </Link>
-                  </li>): null}
+             
           </ul>
         </nav>
       </div>

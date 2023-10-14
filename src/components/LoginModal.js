@@ -1,45 +1,45 @@
-// LoginModal.js
-import React, { useContext , useRef} from "react";
+import React, { useContext, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { AuthContext } from "../contexts/AuthContext";
-
+import { useCookies } from "react-cookie";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginModal = () => {
-  const { setShow, username, setUsername, password, setPassword, show, handleClose, setToken, setFirstname, setLastname } =
-    useContext(AuthContext);
+  const [_, setCookies] = useCookies(["access_token"]);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-    const inputRef = useRef(null);
+  const { show, setShow , setName} = useContext(AuthContext);
+  const navigate = useNavigate();
 
-    const data={
-      token: "123456789",
-       user: {firstname: "joe",
-        lastname: "doe",
-        role: "admin",}
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const result = await axios.post("http://localhost:3001/auth/login", {
+        username,
+        password,
+      });
+
+      setCookies("token", result.data.token);
+      setShow(false);  // To close the modal
+      setName(result.data.name);
+      localStorage.setItem("name", result.data.name);
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      alert("Wrong username or password");  // Assuming any error is an auth failure, you may need more specific error handling
     }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-     if(username === "admin" && password === "admin") {
-      localStorage.setItem("token", data.token);
-         setToken(data.token);
-         setFirstname(data.user.firstname);
-          setLastname(data.user.lastname);
-
-        handleClose();
-        
-        }
-        alert("wrong username or password")
-        // console.log(username, password, 'yyyy')
-  
-    }
+  };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
         <Modal.Title>Modal heading</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form  onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="usernameInput">
             <Form.Label>Username</Form.Label>
             <Form.Control
@@ -48,11 +48,10 @@ const LoginModal = () => {
               autoFocus
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              ref={inputRef}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="passwordInput">
-            <Form.Label  >Password</Form.Label>
+            <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
               value={password}
@@ -62,9 +61,8 @@ const LoginModal = () => {
         </Form>
       </Modal.Body>
       <Modal.Footer style={{justifyContent: "center"}}>
-        
         <Button variant="primary" onClick={handleSubmit}>
-         Login
+          Login
         </Button>
       </Modal.Footer>
     </Modal>

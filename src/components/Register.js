@@ -1,121 +1,86 @@
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
 import { Button, Form, Alert } from "react-bootstrap";
+import { useCookies } from "react-cookie";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./Register.scss";
-import  {useNavigate} from 'react-router-dom';
+import { AuthContext } from "../contexts/AuthContext";
+
 
 const Register = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const [cookies, setCookie] = useCookies(["token"]);
 
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    firstname: '',
-    lastname: ''
-  });
-  const [error, setError] = useState("");
-  const { setToken, setFirstname, setLastname, setUserID, setRole } = useContext(AuthContext);
+  const {setToken, setUserID, setName, name} = useContext(AuthContext);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-   
-    if (formData.username === 'admin' && formData.password === 'admin') {
-      const dummyToken = 'dummyToken123';
-      const dummyFirstname = 'John';
-      const dummyLastname = 'Doe';
-      const dummyID = '12345';
-      const dummyRole = 'admin';
-
-      setToken(dummyToken);
-      setFirstname(formData.firstname);
-      setLastname(formData.lastname);
-      setUserID(dummyID);
-      setRole(formData.role);
-
-
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
      
-      setFormData({
-        username: '',
-        password: '',
-        firstname: '',
-        lastname: ''
+
+    try {
+
+      console.log("username", username);
+      console.log("password", password);
+     const result= await axios.post("http://localhost:3001/auth/register", {
+        username,
+        password,
+        name,
       });
-      setError(''); 
-      navigate('/');
-
-
-
-    } else {
-      
-      setError('Registration error: invalid username or password');
+      console.log(result, 'iiiiiiiiiiiiiiiiii');
+      setToken(result.data.token);
+      setUserID(result.data.userID);
+      setName(result.data.name);
+       setCookie("token", result.data.token, { path: "/" });
+        localStorage.setItem("name", result.data.name);
+    
+      navigate("/"); // Assuming you have a login route after registering
+    } catch (error) {
+      console.error(error);
+      setError('Registration error');
     }
   };
 
   return (
-    <div className="login-container">
+    <div className="auth-container">
       <h1>RazBet</h1>
       {error && <Alert variant='danger'>{error}</Alert>}
-
-      <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="formBasicUsername">
-          <Form.Label>Username</Form.Label>
-          <Form.Control 
-            type="text" 
-            placeholder="Enter username" 
-            name="username" 
-            value={formData.username} 
-            onChange={handleInputChange} 
+      <form onSubmit={handleSubmit}>
+        <h2>Register</h2>
+        <div className="form-group">
+          <label htmlFor="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
           />
-        </Form.Group>
-
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control 
-            type="password" 
-            placeholder="Password" 
-            name="password" 
-            value={formData.password} 
-            onChange={handleInputChange} 
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
           />
-        </Form.Group>
+        </div>
 
-        <Form.Group controlId="formBasicFirstname">
-          <Form.Label>First Name</Form.Label>
-          <Form.Control 
-            type="text" 
-            placeholder="Enter first name" 
-            name="firstname" 
-            value={formData.firstname} 
-            onChange={handleInputChange} 
+        <div className="form-group">
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
           />
-        </Form.Group>
-
-        <Form.Group controlId="formBasicLastname">
-          <Form.Label>Last Name</Form.Label>
-          <Form.Control 
-            type="text" 
-            placeholder="Enter last name" 
-            name="lastname" 
-            value={formData.lastname} 
-            onChange={handleInputChange} 
-          />
-        </Form.Group>
-
-
-        <Button variant="primary" type="submit">
-          Register
-        </Button>
-      </Form>
+        </div>
+        <button type="submit">Register</button>
+      </form>
     </div>
   );
 };

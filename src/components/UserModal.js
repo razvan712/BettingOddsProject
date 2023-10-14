@@ -2,9 +2,10 @@ import React, { useContext } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { AuthContext } from "../contexts/AuthContext";
 import { set } from "react-hook-form";
+import axios from "axios";
 
-const LoginModal = () => {
-  const { setShowLogout, username, showLogout, setUsername, password, setPassword, show, handleClose, setToken, setFirstname, setLastname, handleCloseLogout,logout } =
+const UserModal = () => {
+  const { setShowLogout, username, showLogout, setUsername, password, setPassword, show, handleClose, setToken,  handleCloseLogout,logout } =
     useContext(AuthContext);
 
     const data={
@@ -16,15 +17,16 @@ const LoginModal = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-     if(username === "admin" && password === "admin") {
+    
       localStorage.setItem("token", data.token);
          setToken(data.token);
-         setFirstname(data.user.firstname);
-          setLastname(data.user.lastname);
+
+        
 
         handleClose();
+
         
-        }
+        
         alert("wrong username or password")
         // console.log(username, password, 'yyyy')
   
@@ -36,26 +38,7 @@ const LoginModal = () => {
         <Modal.Title>Modal heading</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{justifyContent: 'center'}}>
-        {/* <Form  onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="usernameInput">
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="username"
-              autoFocus
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="passwordInput">
-            <Form.Label  >Password</Form.Label>
-            <Form.Control
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
-        </Form> */}
+       
 
         <h1 style={{alignSelf: 'center'}}>User details</h1>
       </Modal.Body>
@@ -69,4 +52,4 @@ const LoginModal = () => {
   );
 };
 
-export default LoginModal;
+export default UserModal;

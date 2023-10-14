@@ -1,4 +1,6 @@
 import React, { createContext, useState } from "react";
+import { useCookies } from "react-cookie";
+
 
 const AuthContext = createContext();
 
@@ -6,13 +8,15 @@ const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [userID, setUserID] = useState(null);
   const [username, setUsername] = useState("Mircea");
-  const [firstname, setFirstname] = useState(null);
-  const [lastname, setLastname] = useState(null);
+  const [name, setName] = useState('');
+ 
   const [role, setRole] = useState(null);
   const [show, setShow] = useState(false);
   const [password, setPassword] = useState("");
   const [userData, setUserData] = useState(null);
   const [showLogout, setShowLogout] = useState(false);
+  const [cookies, setCookie] = useCookies(["token"]);
+
 
   const handleClose = () => {
 
@@ -37,6 +41,8 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     setShowLogout(false);
     setToken(null);
+    setCookie("token", null, { path: "/" });
+  
   };
 
   const isAuthenticated = () => {
@@ -54,10 +60,9 @@ const AuthProvider = ({ children }) => {
         setUserID,
         username,
         setUsername,
-        firstname,
-        setFirstname,
-        lastname,
-        setLastname,
+        name,
+        setName,
+      
         role,
         setRole,
         show,
