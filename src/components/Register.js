@@ -39,7 +39,7 @@ const Register = () => {
        setCookie("token", result.data.token, { path: "/" });
         localStorage.setItem("name", nameInput);
     
-      navigate("/"); // Assuming you have a login route after registering
+      navigate("/"); 
     } catch (error) {
       console.error(error);
       setError('Registration error');
@@ -48,10 +48,10 @@ const Register = () => {
 
   return (
     <div className="auth-container">
-      <h1>RazBet</h1>
+      <h1>Register</h1>
       {error && <Alert variant='danger'>{error}</Alert>}
       <form onSubmit={handleSubmit}>
-        <h2>Register</h2>
+       
         <div className="form-group">
           <label htmlFor="username">Username:</label>
           <input

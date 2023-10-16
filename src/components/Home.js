@@ -28,16 +28,16 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
   const { userData, setUserData,} = useContext(AuthContext);
 
 
-  // useEffect(() => {
-  //   if (countries.length > 0) {
-  //     setSelected(sessionStorage.getItem("selected") || countries[0]);
-  //   }
-  // }, [countries]);
+  useEffect(() => {
+    if (countries.length > 0) {
+      setSelected(sessionStorage.getItem("selected") || countries[0]);
+    }
+  }, [countries]);
 
 
-  // useEffect(() => {
-  //   fetchData(fixtures);
-  // }, [input2]);
+  useEffect(() => {
+    fetchData(fixtures);
+  }, [input2]);
 
   const { data: fixtures } = useQuery("matches", fetchFixturesApi);
 
