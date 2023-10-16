@@ -11,6 +11,7 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [nameInput, setNameInput] = useState("");
 
   const [cookies, setCookie] = useCookies(["token"]);
 
@@ -29,14 +30,14 @@ const Register = () => {
      const result= await axios.post("http://localhost:3001/auth/register", {
         username,
         password,
-        name,
+        name: nameInput,
       });
       console.log(result, 'iiiiiiiiiiiiiiiiii');
       setToken(result.data.token);
       setUserID(result.data.userID);
-      setName(result.data.name);
+      setName(nameInput);
        setCookie("token", result.data.token, { path: "/" });
-        localStorage.setItem("name", result.data.name);
+        localStorage.setItem("name", nameInput);
     
       navigate("/"); // Assuming you have a login route after registering
     } catch (error) {
@@ -75,8 +76,8 @@ const Register = () => {
           <input
             type="text"
             id="name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
+            value={nameInput}
+            onChange={(event) => setNameInput(event.target.value)}
           />
         </div>
         <button type="submit">Register</button>
