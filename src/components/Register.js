@@ -50,38 +50,38 @@ const Register = () => {
     <div className="auth-container">
       <h1>Register</h1>
       {error && <Alert variant='danger'>{error}</Alert>}
-      <form onSubmit={handleSubmit}>
-       
-        <div className="form-group">
-          <label htmlFor="username">Username:</label>
-          <input
+      <Form style={{maxWidth: '400px', margin: '0 auto'}} onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Label htmlFor="username">Username:</Form.Label>
+          <Form.Control 
             type="text"
             id="username"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
           />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password:</label>
-          <input
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="password">Password:</Form.Label>
+          <Form.Control 
             type="password"
             id="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="name">Name:</label>
-          <input
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="name">Name:</Form.Label>
+          <Form.Control 
             type="text"
             id="name"
             value={nameInput}
             onChange={(event) => setNameInput(event.target.value)}
           />
-        </div>
-        <button type="submit">Register</button>
-      </form>
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Register
+        </Button>
+      </Form>
     </div>
   );
 };
