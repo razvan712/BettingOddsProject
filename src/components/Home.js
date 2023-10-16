@@ -28,16 +28,16 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
   const { userData, setUserData,} = useContext(AuthContext);
 
 
-  useEffect(() => {
-    if (countries.length > 0) {
-      setSelected(sessionStorage.getItem("selected") || countries[0]);
-    }
-  }, [countries]);
+  // useEffect(() => {
+  //   if (countries.length > 0) {
+  //     setSelected(sessionStorage.getItem("selected") || countries[0]);
+  //   }
+  // }, [countries]);
 
 
-  useEffect(() => {
-    fetchData(fixtures);
-  }, [input2]);
+  // useEffect(() => {
+  //   fetchData(fixtures);
+  // }, [input2]);
 
   const { data: fixtures } = useQuery("matches", fetchFixturesApi);
 
@@ -98,6 +98,8 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
   }
 
   function getData(id, teams) {
+    console.log(id, "id", teams, "teams");
+
     axios({
       method: "GET",
       url: "https://api-football-v1.p.rapidapi.com/v3/odds",
@@ -110,6 +112,9 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
       .then((response) => {
         setMatchId(id);
         setTeams(teams);
+        localStorage.setItem("matchId", id);
+        localStorage.setItem("teams", JSON.stringify(teams));
+
       })
       .catch((error) => {
         console.log(error);
@@ -119,9 +124,9 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
  
   return (
     <>
-        {/* <LoginModal   /> */}
-      <form onSubmit={handleSubmit}>
-        <label>League</label>
+        
+      <form onSubmit={handleSubmit} >
+        <label >League</label>
         <input
           type="text"
           name="input"
@@ -137,12 +142,13 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
             return <option key={index} value={item} />;
           })}
         </datalist>
-        <input type="submit" value="Search" className="form-submit" />
+        {/* <input type="submit" value="Search" className="form-submit" /> */}
+        <Button type="submit" className="form-submit">Search</Button>
       </form>
 
-      <h2>Available Leagues</h2>
-      <div className="w-100 ">
-        <div className="d-flex flex-wrap  w-100">
+      <h2 style={{textAlign: 'center'}}>Available Leagues</h2>
+     
+        <div className="d-flex flex-wrap  w-100 test">
           {isLoadingLeagues?  <p>LOADING</p>:
             countries.map((item, index) => {
               return (
@@ -164,7 +170,7 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
               );
             })}
         </div>
-      </div>
+    
 
       <Table className="table-success table  table-hover custom-table">
         <thead>
@@ -185,6 +191,7 @@ const Home = ({ matchId, setMatchId, setTeams }) => {
                 home: item.teams.home.name,
                 away: item.teams.away.name,
               };
+              
 
               return (
                 <tr key={id}>

@@ -4,13 +4,14 @@ import { AuthContext } from "../contexts/AuthContext";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { set } from "react-hook-form";
 
 const LoginModal = () => {
   const [_, setCookies] = useCookies(["access_token"]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { show, setShow , setName} = useContext(AuthContext);
+  const { show, setShow , setName, setToken} = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -25,6 +26,7 @@ const LoginModal = () => {
       setCookies("token", result.data.token);
       setShow(false);  // To close the modal
       setName(result.data.name);
+      setToken(result.data.token);
       localStorage.setItem("name", result.data.name);
       navigate("/");
     } catch (error) {

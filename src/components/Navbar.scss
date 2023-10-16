@@ -37,3 +37,10 @@
 .active_link {
     color: black;
     }
+
+    @media (max-width: 768px) {
+        .register-link {
+            display: none;
+        }
+    }
+    

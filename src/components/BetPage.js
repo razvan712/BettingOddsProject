@@ -4,12 +4,41 @@ import "./BetPage.scss";
 import Bets from "./Bets";
 import apiKey from "../data/config";
 
-const BetPage = ({ matchId, teams }) => {
+const BetPage = () => {
   const [bookies, setBookies] = useState([]);
   const [activeBookie, setActiveBookie] = useState({});
   const [selected, setSelected] = useState('');
 
-  
+const teams = localStorage.getItem("teams");
+const matchId = localStorage.getItem("matchId");
+  console.log(matchId, "matchId");
+  useEffect(() => {
+    console.log(matchId, "fffffffffffff");
+    
+   
+
+
+    axios({
+      method: "GET",
+      url: "https://api-football-v1.p.rapidapi.com/v3/odds",
+      params: { fixture: matchId },
+      headers: {
+        "X-RapidAPI-Key": apiKey,
+        "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
+      },
+    })
+      .then((response) => {
+        console.log(response.data, "odds");
+        setBookies(response?.data?.response[0].bookmakers);
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [matchId]);
+
+ 
+
   useEffect(() => {
     if (bookies.length > 0) {
       const storedSelectedBookie = sessionStorage.getItem("selectedBookie");
@@ -24,30 +53,6 @@ const BetPage = ({ matchId, teams }) => {
     }
   }, [bookies]);
 
-  useEffect(() => {
-    console.log(matchId, "fffffffffffff");
-    axios({
-      method: "GET",
-      url: "https://api-football-v1.p.rapidapi.com/v3/odds",
-      params: { fixture: matchId },
-      headers: {
-        "X-RapidAPI-Key": apiKey,
-        "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
-      },
-    })
-      .then((response) => {
-        console.log(response.data, "odds");
-        setBookies(response.data.response[0].bookmakers);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [matchId]);
-
- 
-
-
-
   return (
     <>
       <div>
@@ -59,6 +64,7 @@ const BetPage = ({ matchId, teams }) => {
                 onClick={() => {
                   setActiveBookie((prev) => bookie);
                   setSelected((prev) => bookie.name);
+                  sessionStorage.setItem("selectedBookie", bookie.name);
                 }}
 
                 className={

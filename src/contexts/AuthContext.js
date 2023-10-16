@@ -5,17 +5,18 @@ import { useCookies } from "react-cookie";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(null);
   const [userID, setUserID] = useState(null);
   const [username, setUsername] = useState("Mircea");
-  const [name, setName] = useState('');
- 
+  
   const [role, setRole] = useState(null);
   const [show, setShow] = useState(false);
   const [password, setPassword] = useState("");
   const [userData, setUserData] = useState(null);
   const [showLogout, setShowLogout] = useState(false);
   const [cookies, setCookie] = useCookies(["token"]);
+  const [token, setToken] = useState(cookies.token ?? null);
+  const [name, setName] = useState(localStorage.getItem("name") ?? '');
+
 
 
   const handleClose = () => {

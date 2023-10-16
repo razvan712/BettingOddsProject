@@ -16,7 +16,7 @@ const About = () => {
 
   return (
     <>
-    {/* <LoginModal  /> */}
+  
     <div className="about-page "> 
        
       <h1>About</h1>

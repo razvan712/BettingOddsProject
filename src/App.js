@@ -5,9 +5,6 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import About from "./components/About";
 import BetPage from "./components/BetPage";
-import Us from "./components/AboutComp/Us";
-import They from "./components/AboutComp/They";
-import MatchData from "./components/MatchData/MatchData";
 import Register from "./components/Register";
 import { AuthContext, AuthProvider } from "./contexts/AuthContext";
 import { QueryClient, QueryClientProvider, setLogger } from "react-query";
@@ -23,9 +20,15 @@ function App() {
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
-            <div className="App" >
+          <div style={{
+            width: '100%',
+            justifyContent: 'center',
+           
+             
+          }}>
+            <div >
           
-              <img src={banner} alt="banner" width="100%"  />
+              <img src={banner} alt="banner" height='200px' width="100%"  />
             </div>
             <Navbar />
 
@@ -36,8 +39,7 @@ function App() {
               />
 
               <Route path="/about/" element={<About />}>
-                <Route path="us" element={<Us />} />
-                <Route path="they" element={<They />} />
+                
               </Route>
               <Route path="/register" element={<Register />} />
               <Route
@@ -51,6 +53,7 @@ function App() {
                 }
               />
             </Routes>
+            </div>
           </BrowserRouter>
         </QueryClientProvider>
       </AuthProvider>

@@ -2,7 +2,8 @@ import React from "react";
 import "./Bets.scss";
 import { Table } from "react-bootstrap";
 
-const Bets = ({ activeBookie, teams }) => {
+const Bets = ({ activeBookie}) => {
+  const teams = JSON.parse(localStorage.getItem("teams"));
   console.log(activeBookie, "activeBookie9090");
   const bothTeamsScore = activeBookie?.bets?.filter(
     (bet) => bet.name === "Both Teams Score"
