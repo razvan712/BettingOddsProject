@@ -29,7 +29,7 @@ const matchId = localStorage.getItem("matchId");
     })
       .then((response) => {
         console.log(response.data, "odds");
-        setBookies(response?.data?.response[0].bookmakers);
+        setBookies(response?.data?.response[0]?.bookmakers);
 
       })
       .catch((error) => {
@@ -40,7 +40,7 @@ const matchId = localStorage.getItem("matchId");
  
 
   useEffect(() => {
-    if (bookies.length > 0) {
+    if (bookies?.length > 0) {
       const storedSelectedBookie = sessionStorage.getItem("selectedBookie");
       const initialSelectedBookie = storedSelectedBookie || bookies[0]?.name;
   

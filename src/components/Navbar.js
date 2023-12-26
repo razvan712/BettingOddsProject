@@ -62,7 +62,7 @@ const Navbar = () => {
                 About
               </Link>
             </li>
-            <li>
+            {/* <li>
               {token === null ? (
                 <div style={{ minWidrh: "200px" }}>
                   <Button variant="primary" onClick={handleShow}>
@@ -82,7 +82,7 @@ const Navbar = () => {
                   <span style={{ minWidth: "200px" }}>{name}</span>
                 </Button>
               )}
-            </li>
+            </li> */}
           </ul>
         </nav>
       </div>

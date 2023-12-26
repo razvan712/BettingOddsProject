@@ -22,7 +22,7 @@ const Bets = ({ activeBookie}) => {
     <>
       <div>
         <h3>
-          Bets for {teams.home} vs {teams.away} {activeBookie?.name}
+          Bets for {teams?.home} vs {teams?.away} {activeBookie?.name}
         </h3>
         {activeBookie && activeBookie.name ? (
           <>
@@ -32,7 +32,7 @@ const Bets = ({ activeBookie}) => {
                 <tr>
                   <th colSpan={3}>
                     <div className="d-flex justify-content-center">
-                      Match winner {teams.home} vs {teams.away}
+                      Match winner {teams?.home} vs {teams?.away}
                     </div>{" "}
                   </th>
                 </tr>
@@ -66,7 +66,7 @@ const Bets = ({ activeBookie}) => {
                   <tr>
                     <th colSpan={3}>
                       <div className="d-flex justify-content-center">
-                        Both teamss score {teams.home} vs {teams.away}
+                        Both teamss score {teams?.home} vs {teams?.away}
                       </div>{" "}
                     </th>
                   </tr>
